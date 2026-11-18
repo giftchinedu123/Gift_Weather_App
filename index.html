@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css" />
+    
+  </head>
+  <body>
+    <main class="page">
+      <section class="phone-shell" aria-label="Weather forecast">
+        
+        <header class="weather-header">
+          <div class="location-meta">
+            <h1 id="location-name" class="location-name">
+              <span class="skeleton skeleton-title" aria-hidden="true"></span>
+            </h1>
+            <p id="current-date" class="current-date">
+              <span class="skeleton skeleton-subtitle" aria-hidden="true"></span>
+            </p>
+          </div>
+          <div id="day-night-icon" class="day-night-icon" aria-label="Time of day"></div>
+        </header>
+
+       
+        <p id="location-notice" class="status-notice" hidden>
+          <span>Showing weather for Lagos. Enable location for your local weather.</span>
+          <button id="use-location-btn" type="button" class="text-action-btn">
+            Use my location
+          </button>
+        </p>
+
+        <p id="cache-notice" class="status-notice" hidden></p>
+
+       
+        <div id="weather-content" class="weather-content">
+        
+          <section class="hero-temp-section" aria-label="Current temperature">
+            <p id="current-temp" class="current-temp">
+              <span class="skeleton skeleton-hero" aria-hidden="true"></span>
+            </p>
+          </section>
+
+         
+          <section class="hourly-section" aria-label="Hourly forecast">
+            <div
+              id="hourly-strip"
+              class="hourly-strip"
+              role="list"
+              tabindex="0"
+              aria-label="Hourly forecast, scroll horizontally"
+            >
+              
+          </section>
+
+          
+          <section class="details-section" aria-label="Weather details">
+            <dl id="details-grid" class="details-grid">
+             
+            </dl>
+          </section>
+
+         
+          <section class="daily-section" aria-label="6-day forecast">
+            <div id="daily-row" class="daily-row" role="list">
+             
+            </div>
+          </section>
+        </div>
+
+       
+        <div id="error-state" class="error-state" hidden>
+          <p class="error-message">Couldn't load the weather</p>
+          <button id="retry-btn" type="button" class="retry-btn">Try again</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

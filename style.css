@@ -1,0 +1,471 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+:root {
+  --bg-page: #f5f5f5;
+  --bg-surface: #ebebeb;
+  --bg-skeleton-base: #e0e0e0;
+  --bg-skeleton-highlight: #eaeaea;
+
+  --text-primary: #232323;
+  --text-muted: #666666;
+  --text-subtle: #707070;
+
+  --border-hairline: rgba(35, 35, 35, 0.08);
+  --shadow-phone: 0 24px 64px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+
+  --radius-phone: 40px;
+  --padding-x: 28px;
+  --padding-y: 34px;
+
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --transition-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  background-color: var(--bg-page);
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+
+.page {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 16px;
+}
+
+.phone-shell {
+  width: 100%;
+  max-width: 420px;
+  min-height: 760px;
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-phone);
+  box-shadow: var(--shadow-phone);
+  padding: var(--padding-y) var(--padding-x) 36px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+@media (max-width: 480px) {
+  html,
+  body {
+    background-color: var(--bg-surface);
+  }
+
+  .page {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .phone-shell {
+    max-width: 100%;
+    min-height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 28px 22px 32px;
+  }
+
+  :root {
+    --padding-x: 22px;
+  }
+}
+
+
+.weather-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.location-meta {
+  min-width: 0;
+}
+
+.location-name {
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.current-date {
+  margin-top: 3px;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.day-night-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+
+.status-notice {
+  margin-top: 12px;
+  font-size: 0.78125rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.status-notice[hidden] {
+  display: none;
+}
+
+.text-action-btn {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 0.78125rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 2px 0;
+  transition: opacity 0.16s var(--transition-ease);
+}
+
+.text-action-btn:hover {
+  opacity: 0.7;
+}
+
+
+.weather-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.weather-content[hidden] {
+  display: none;
+}
+
+.weather-content.is-loaded {
+  animation: fadeInSoft 0.45s var(--transition-ease) both;
+}
+
+@keyframes fadeInSoft {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.hero-temp-section {
+  margin-top: 24px;
+  margin-bottom: 30px;
+}
+
+.current-temp {
+  font-size: clamp(6rem, 32vw, 10.5rem);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+
+.hourly-section {
+  margin-bottom: 34px;
+}
+
+.hourly-strip {
+  display: flex;
+  align-items: flex-start;
+  gap: 22px;
+  overflow-x: auto;
+  margin-inline: calc(-1 * var(--padding-x));
+  padding-inline: var(--padding-x);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.hourly-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.hour-item {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 38px;
+  scroll-snap-align: start;
+}
+
+.hour-time {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.hour-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hour-temp {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+
+.details-section {
+  margin-bottom: 36px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+  row-gap: 20px;
+}
+
+.detail-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detail-value {
+  font-size: 1.0625rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+
+.daily-section {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.daily-row {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+  align-items: start;
+}
+
+.day-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 5px;
+  min-width: 0;
+}
+
+.day-date {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.day-temps {
+  font-size: 0.78125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+
+.error-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 16px;
+  padding: 40px 16px;
+}
+
+.error-state[hidden] {
+  display: none;
+}
+
+.error-message {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.retry-btn {
+  padding: 10px 22px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--bg-surface);
+  background-color: var(--text-primary);
+  border-radius: 999px;
+  transition: opacity 0.16s var(--transition-ease), transform 0.16s var(--transition-ease);
+}
+
+.retry-btn:hover {
+  opacity: 0.86;
+}
+
+.retry-btn:active {
+  transform: scale(0.97);
+}
+
+.skeleton {
+  display: inline-block;
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    var(--bg-skeleton-base) 25%,
+    var(--bg-skeleton-highlight) 50%,
+    var(--bg-skeleton-base) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.skeleton-title {
+  width: 136px;
+  height: 18px;
+}
+
+.skeleton-subtitle {
+  width: 158px;
+  height: 13px;
+}
+
+.skeleton-hero {
+  width: 200px;
+  height: 136px;
+  border-radius: 16px;
+}
+
+.skeleton-hour-time {
+  width: 32px;
+  height: 11px;
+}
+
+.skeleton-hour-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+}
+
+.skeleton-hour-temp {
+  width: 26px;
+  height: 14px;
+}
+
+.skeleton-detail-label {
+  width: 64px;
+  height: 11px;
+}
+
+.skeleton-detail-value {
+  width: 88px;
+  height: 17px;
+  margin-top: 2px;
+}
+
+.skeleton-day-date {
+  width: 36px;
+  height: 10px;
+}
+
+.skeleton-day-temps {
+  width: 42px;
+  height: 13px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background: var(--bg-skeleton-base);
+  }
+
+  .weather-content.is-loaded {
+    animation: none;
+  }
+}
